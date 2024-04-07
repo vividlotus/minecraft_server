@@ -1,0 +1,11 @@
+beadrock_server/server/*
+!beadrock_server/server/.gitkeep
+beadrock_server/prev_version/*
+beadrock_server/backup_worlds/*
+!beadrock_server/backup_worlds/.gitkeep
+
+connect_server/backup/*
+!connect_server/backup/.gitkeep
+connect_server/players/*
+!connect_server/players/.gitkeep
+connect_server/BedrockConnect-1.0-SNAPSHOT.jar

@@ -1,0 +1,59 @@
+version: '3.5'
+
+services:
+  dnsmasq:
+    image: strm/dnsmasq
+    restart: always
+    volumes:
+      - ./dns/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./dns/hosts-dnsmasq:/etc/hosts-dnsmasq
+    ports:
+      - "53:53/udp"
+    cap_add:
+      - NET_ADMIN
+
+  connect_server:
+    image: openjdk:18
+    command: java -jar BedrockConnect-1.0-SNAPSHOT.jar nodb=true custom_servers=custom_servers.json
+    working_dir: /connect_server
+    restart: always
+    volumes:
+      - ./connect_server:/connect_server
+    ports:
+      - "19132:19132/udp" # Switchではポート変更できないので最初に接続するこっちを標準のマイクラポートにする
+    depends_on:
+        - dnsmasq
+
+  minecraft_server:
+    build:
+        context: ./
+        dockerfile: ./beadrock_server/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./beadrock_server:/beadrock_server
+    ports:
+      - "19131:19132/udp" # custom_servers.jsonとserver.propertiesでポートをあわせる
+    depends_on:
+        - connect_server
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx/public:/usr/share/nginx/html
+    ports:
+      - "8080:80"
+    depends_on:
+        - dnsmasq
+
+  backup_update:
+    build:
+        context: ./
+        dockerfile: ./scripts/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./:/app

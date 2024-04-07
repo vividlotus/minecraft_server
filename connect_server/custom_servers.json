@@ -1,0 +1,8 @@
+[
+	{
+		"name": "World",
+		"address": "192.168.11.88",
+		"iconUrl": "http://192.168.11.88:8080/icon_.png",
+		"port": 19131
+	}
+]
