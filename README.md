@@ -38,8 +38,13 @@
 
 1. このリポジトリをCloneしてディレクトリ移動
 2. `docker-compose run --rm backup_update bash /app/scripts/update.sh`
-2. `docker-compose up -d`
-3. 
+3. `connect_server/custom_servers.json` ファイルのIPを自分の環境に合わせる
+4. `dns/hosts-dnsmasq` ファイルのIPを自分の環境に合わせる
+5. `docker-compose up -d`
+6. Switchのネットワーク設定を変更する
+    - DNSサーバーをプライマリとセカンダリを適宜合わせる
+7. Switchのマイクラを起動して適当なサーバーへアクセスする
+8. するとConnectサーバーへ一旦接続できるのでそこからWorldを選択すると自分で建てたサーバーへと接続が可能
 
 ## TODO
 
